@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,7 +43,6 @@ import com.example.csnexo.domain.model.PotencialComercial
 import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
 import com.example.csnexo.ui.oportunidades.etiqueta
-import com.example.csnexo.ui.theme.CSNexoTheme
 
 @Composable
 fun OportunidadFormRoute(
@@ -71,6 +69,10 @@ fun OportunidadFormRoute(
         onPotencialChange = viewModel::onPotencialChange,
         onEstadoChange = viewModel::onEstadoChange,
         onObservacionesChange = viewModel::onObservacionesChange,
+        onFotoGuardada = viewModel::onFotoGuardada,
+        onFotoEliminada = viewModel::onFotoEliminada,
+        onUbicacionObtenida = viewModel::onUbicacionObtenida,
+        onUbicacionEliminada = viewModel::onUbicacionEliminada,
         onGuardar = viewModel::guardar
     )
 }
@@ -88,6 +90,10 @@ fun OportunidadFormScreen(
     onPotencialChange: (PotencialComercial) -> Unit,
     onEstadoChange: (EstadoOportunidad) -> Unit,
     onObservacionesChange: (String) -> Unit,
+    onFotoGuardada: (String) -> Unit,
+    onFotoEliminada: () -> Unit,
+    onUbicacionObtenida: (String) -> Unit,
+    onUbicacionEliminada: () -> Unit,
     onGuardar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -241,6 +247,16 @@ fun OportunidadFormScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                EvidenciaOportunidad(
+                    fotoPath = state.fotoPath,
+                    ubicacionReferencia = state.ubicacionReferencia,
+                    habilitado = !state.guardando,
+                    onFotoGuardada = onFotoGuardada,
+                    onFotoEliminada = onFotoEliminada,
+                    onUbicacionObtenida = onUbicacionObtenida,
+                    onUbicacionEliminada = onUbicacionEliminada
+                )
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
@@ -323,34 +339,5 @@ private fun <T> SelectorCampo(
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun OportunidadFormPreview() {
-    CSNexoTheme {
-        OportunidadFormScreen(
-            state = OportunidadFormUiState(
-                nombre = "Patrocinio Feria Empresarial",
-                tipo = TipoOportunidad.PATROCINIO,
-                descripcion = "Evaluar presencia de marca en el escenario principal.",
-                fuenteInformacion = "Fuente ficticia",
-                prioridad = Prioridad.ALTA,
-                potencial = PotencialComercial.ALTO,
-                estado = EstadoOportunidad.EVENTO_IDENTIFICADO,
-                nombreError = null
-            ),
-            onVolver = {},
-            onNombreChange = {},
-            onTipoChange = {},
-            onDescripcionChange = {},
-            onFuenteChange = {},
-            onPrioridadChange = {},
-            onPotencialChange = {},
-            onEstadoChange = {},
-            onObservacionesChange = {},
-            onGuardar = {}
-        )
     }
 }

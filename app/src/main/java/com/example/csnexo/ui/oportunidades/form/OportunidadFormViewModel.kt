@@ -75,6 +75,22 @@ class OportunidadFormViewModel(
         copy(observaciones = valor)
     }
 
+    fun onFotoGuardada(ruta: String) = actualizar {
+        copy(fotoPath = ruta)
+    }
+
+    fun onFotoEliminada() = actualizar {
+        copy(fotoPath = null)
+    }
+
+    fun onUbicacionObtenida(referencia: String) = actualizar {
+        copy(ubicacionReferencia = referencia)
+    }
+
+    fun onUbicacionEliminada() = actualizar {
+        copy(ubicacionReferencia = null)
+    }
+
     fun guardar() {
         val actual = _uiState.value
         if (actual.cargando || actual.guardando) return
