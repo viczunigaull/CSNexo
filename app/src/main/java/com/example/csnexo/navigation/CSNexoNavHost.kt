@@ -8,15 +8,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.csnexo.domain.model.Usuario
-import com.example.csnexo.ui.common.EnConstruccionScreen
 import com.example.csnexo.ui.menu.MenuScreen
+import com.example.csnexo.ui.oportunidades.form.OportunidadFormRoute
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesRoute
 
 /**
  * Grafo de navegación autenticado.
  *
- * La lista ya usa Room. Los destinos de creación y edición son placeholders
- * hasta la Etapa 3; las rutas quedan definidas desde ahora.
+ * La lista y el formulario comparten el repositorio de oportunidades. La ruta de
+ * edición recibe el ID como argumento Long y el ViewModel lo recupera desde
+ * SavedStateHandle.
  */
 @Composable
 fun CSNexoNavHost(
@@ -54,10 +55,9 @@ fun CSNexoNavHost(
         }
 
         composable(Routes.OPORTUNIDAD_NUEVA) {
-            EnConstruccionScreen(
-                titulo = "Nueva oportunidad",
-                descripcion = "El formulario de creación se implementa en la Etapa 3.",
-                onVolver = { navController.popBackStack() }
+            OportunidadFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
             )
         }
 
@@ -68,15 +68,10 @@ fun CSNexoNavHost(
                     type = NavType.LongType
                 }
             )
-        ) { entrada ->
-            val oportunidadId = entrada.arguments
-                ?.getLong(Routes.ARG_OPORTUNIDAD_ID)
-                ?: 0L
-
-            EnConstruccionScreen(
-                titulo = "Editar oportunidad",
-                descripcion = "El formulario de edición se implementa en la Etapa 3. ID: $oportunidadId.",
-                onVolver = { navController.popBackStack() }
+        ) {
+            OportunidadFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
             )
         }
     }

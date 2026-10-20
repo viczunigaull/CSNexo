@@ -1,12 +1,14 @@
 package com.example.csnexo.di
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.csnexo.CSNexoApplication
 import com.example.csnexo.ui.auth.LoginViewModel
 import com.example.csnexo.ui.auth.SesionViewModel
+import com.example.csnexo.ui.oportunidades.form.OportunidadFormViewModel
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesViewModel
 
 /**
@@ -30,6 +32,12 @@ object AppViewModelProvider {
         }
         initializer {
             ListaOportunidadesViewModel(
+                repository = csnexoApplication().container.oportunidadRepository
+            )
+        }
+        initializer {
+            OportunidadFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
                 repository = csnexoApplication().container.oportunidadRepository
             )
         }
