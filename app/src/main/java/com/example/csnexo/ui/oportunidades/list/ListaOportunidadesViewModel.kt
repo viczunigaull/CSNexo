@@ -15,6 +15,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
+/**
+ * ViewModel de la lista de oportunidades.
+ *
+ * Observa el repositorio y transforma sus emisiones en `ListaOportunidadesUiState`.
+ * El contador de reintentos permite volver a suscribirse si ocurre un error.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class ListaOportunidadesViewModel(
     private val repository: OportunidadRepository
@@ -23,6 +29,7 @@ class ListaOportunidadesViewModel(
     private val reintentos = MutableStateFlow(0)
 
     val uiState: StateFlow<ListaOportunidadesUiState> = reintentos
+        // Cada reintento cancela la observación anterior y crea una nueva.
         .flatMapLatest {
             repository.observarTodas()
                 .map { oportunidades ->
@@ -46,6 +53,7 @@ class ListaOportunidadesViewModel(
         }
         .stateIn(
             scope = viewModelScope,
+            // Mantiene la observación activa mientras la pantalla está visible.
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ListaOportunidadesUiState()
         )

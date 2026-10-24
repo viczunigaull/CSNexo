@@ -18,6 +18,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel del formulario de oportunidad.
+ *
+ * Recibe el ID por `SavedStateHandle` cuando se edita. No conoce Room ni el DAO:
+ * solo usa `OportunidadRepository`.
+ */
 class OportunidadFormViewModel(
     savedStateHandle: SavedStateHandle,
     private val repository: OportunidadRepository
@@ -95,6 +101,7 @@ class OportunidadFormViewModel(
         val actual = _uiState.value
         if (actual.cargando || actual.guardando) return
 
+        // En edición, si no se pudo cargar la oportunidad, no se permite guardar.
         if (esEdicion && creadaEn == null) {
             _uiState.update {
                 it.copy(errorGeneral = "No se encontró la oportunidad que intentas editar.")
@@ -102,6 +109,7 @@ class OportunidadFormViewModel(
             return
         }
 
+        // La validación ocurre antes de construir el modelo y llamar al repositorio.
         val conErrores = validar(actual)
         if (conErrores != null) {
             _uiState.value = conErrores
@@ -134,6 +142,7 @@ class OportunidadFormViewModel(
                 repository.crear(oportunidad).map { Unit }
             }
 
+            // El evento de navegación se deriva de guardadoExitosamente.
             resultado
                 .onSuccess {
                     _uiState.update {
@@ -151,6 +160,10 @@ class OportunidadFormViewModel(
         }
     }
 
+    /**
+     * Carga la oportunidad cuando el formulario se abre en modo edición.
+     * Si no existe, deja el formulario bloqueado para guardar.
+     */
     private fun cargarOportunidad() {
         viewModelScope.launch {
             val oportunidad = try {
@@ -189,6 +202,10 @@ class OportunidadFormViewModel(
         }
     }
 
+    /**
+     * Devuelve una copia del estado con los errores encontrados, o null si el
+     * formulario es válido. Así la pantalla solo muestra textos ya calculados.
+     */
     private fun validar(actual: OportunidadFormUiState): OportunidadFormUiState? {
         val nombreError = when {
             actual.nombre.isBlank() -> "El nombre es obligatorio."

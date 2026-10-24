@@ -16,6 +16,7 @@ class DatabaseSeeder(
 ) {
 
     suspend fun sembrarSiVacio() {
+        // Solo inserta una vez, para no duplicar datos en cada inicio.
         if (dao.contar() > 0) return
 
         val ahora = System.currentTimeMillis()

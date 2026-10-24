@@ -9,6 +9,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * Implementación local de oportunidades. La UI sigue recibiendo modelos de
+ * dominio; el DAO y la entidad quedan encapsulados aquí.
+ */
 class OportunidadRepositoryImpl(
     private val dao: OportunidadDao
 ) : OportunidadRepository {
@@ -30,6 +34,8 @@ class OportunidadRepositoryImpl(
             Unit
         }
 
+    // Convierte excepciones de Room en Result para que el ViewModel no reciba
+    // excepciones crudas. CancellationException se vuelve a lanzar.
     private suspend fun <T> ejecutar(bloque: suspend () -> T): Result<T> =
         try {
             Result.success(bloque())

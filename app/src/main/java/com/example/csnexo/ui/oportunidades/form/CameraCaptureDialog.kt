@@ -40,6 +40,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import java.io.File
 
+/**
+ * Diálogo de captura fotográfica.
+ *
+ * CameraX se enlaza al ciclo de vida de la Activity. La foto se escribe en el
+ * almacenamiento interno de la app para no necesitar permisos de almacenamiento
+ * externo. Al cerrar el diálogo se desenlazan las cámaras.
+ */
 @Composable
 fun CameraCaptureDialog(
     onDismiss: () -> Unit,
@@ -72,6 +79,7 @@ fun CameraCaptureDialog(
                     }
                     val capture = ImageCapture.Builder().build()
 
+                    // Si el equipo no tiene cámara trasera, se intenta la frontal.
                     val selector = if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA)) {
                         CameraSelector.DEFAULT_BACK_CAMERA
                     } else {
@@ -166,6 +174,7 @@ fun CameraCaptureDialog(
                         val directorio = File(context.filesDir, "evidencias").apply {
                             mkdirs()
                         }
+                        // La captura se escribe en un archivo propio de la app.
                         val archivo = File(
                             directorio,
                             "oportunidad_${System.currentTimeMillis()}.jpg"

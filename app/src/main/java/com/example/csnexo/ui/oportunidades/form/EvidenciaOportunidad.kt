@@ -61,6 +61,7 @@ fun EvidenciaOportunidad(
     var mostrarCamara by remember { mutableStateOf(false) }
     var mensaje by remember { mutableStateOf<String?>(null) }
 
+    // El permiso de cámara se solicita solo cuando el usuario decide usarla.
     val lanzadorCamara = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { concedido ->
@@ -71,6 +72,7 @@ fun EvidenciaOportunidad(
         }
     }
 
+    // Se aceptan permisos precisos o aproximados; la consulta es puntual.
     val lanzadorUbicacion = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { resultado ->
@@ -221,6 +223,10 @@ private fun Context.tienePermisoUbicacion(): Boolean =
     tienePermiso(Manifest.permission.ACCESS_FINE_LOCATION) ||
         tienePermiso(Manifest.permission.ACCESS_COARSE_LOCATION)
 
+/**
+ * Obtiene una sola referencia de ubicación a partir de la última posición
+ * conocida. No registra recorridos ni solicita actualizaciones periódicas.
+ */
 private fun obtenerReferenciaUbicacion(context: Context): String? {
     val manager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
         ?: return null
@@ -252,6 +258,7 @@ private fun FotoOportunidad(
     modifier: Modifier = Modifier
 ) {
     val imagen by produceState<ImageBitmap?>(initialValue = null, ruta) {
+        // La lectura del archivo se hace fuera del hilo principal.
         value = withContext(Dispatchers.IO) {
             decodificarFoto(ruta)?.asImageBitmap()
         }
@@ -279,6 +286,10 @@ private fun FotoOportunidad(
     }
 }
 
+/**
+ * Decodifica la foto reduciendo su resolución para no cargar una imagen enorme
+ * en memoria. Es suficiente para la vista previa del formulario.
+ */
 private fun decodificarFoto(ruta: String): Bitmap? {
     val medidas = BitmapFactory.Options().apply {
         inJustDecodeBounds = true

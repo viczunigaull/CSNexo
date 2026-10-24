@@ -26,6 +26,7 @@ class SesionRepositoryImpl(
 ) : SesionRepository {
 
     override val sesion: Flow<Usuario?> = dataStore.data
+        // Un error de lectura de DataStore se trata como "sin sesión".
         .catch { error ->
             if (error is IOException) {
                 emit(emptyPreferences())
