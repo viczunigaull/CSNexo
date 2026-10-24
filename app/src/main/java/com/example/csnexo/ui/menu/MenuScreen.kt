@@ -1,9 +1,6 @@
 package com.example.csnexo.ui.menu
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,17 +8,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,14 +35,7 @@ fun MenuScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { Text("CSNexo") },
-                actions = {
-                    TextButton(onClick = onCerrarSesion) {
-                        Text("Salir")
-                    }
-                }
-            )
+            TopAppBar(title = { Text("CSNexo") })
         }
     ) { innerPadding ->
         Column(
@@ -71,35 +59,41 @@ fun MenuScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                text = "Módulos",
+                text = "Módulo de la primera entrega",
                 style = MaterialTheme.typography.titleMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            TarjetaModulo(
-                titulo = "Oportunidades",
-                descripcion = "Crear, editar y revisar las oportunidades registradas.",
-                habilitado = true,
-                onClick = onAbrirOportunidades
-            )
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Oportunidades",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Crea, edita y revisa las oportunidades registradas en el dispositivo.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirOportunidades,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir oportunidades")
+                    }
+                }
+            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            TarjetaModulo(
-                titulo = "Eventos",
-                descripcion = "Disponible en el alcance transversal.",
-                habilitado = false,
-                onClick = {}
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            TarjetaModulo(
-                titulo = "Seguimiento",
-                descripcion = "Disponible en el alcance transversal.",
-                habilitado = false,
-                onClick = {}
+            Text(
+                text = "Eventos, organizaciones, seguimiento y alertas quedan para el alcance transversal.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -110,58 +104,6 @@ fun MenuScreen(
             ) {
                 Text("Cerrar sesión")
             }
-        }
-    }
-}
-
-@Composable
-private fun TarjetaModulo(
-    titulo: String,
-    descripcion: String,
-    habilitado: Boolean,
-    onClick: () -> Unit
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = if (habilitado) {
-                MaterialTheme.colorScheme.surface
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            }
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = habilitado, onClick = onClick)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = titulo,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = descripcion,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-            }
-            Text(
-                text = if (habilitado) "Abrir" else "Próximamente",
-                style = MaterialTheme.typography.labelMedium,
-                color = if (habilitado) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                modifier = Modifier.padding(start = 12.dp)
-            )
         }
     }
 }
