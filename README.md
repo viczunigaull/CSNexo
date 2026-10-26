@@ -1,4 +1,4 @@
-# CSNexo - Gestion Movil de Oportunidades y Activaciones Corporativas[cite: 8]
+# CSNexo - Gestion Movil de Oportunidades y Activaciones Corporativas
 
 Aplicacion movil desarrollada en Android con Kotlin y Jetpack Compose para centralizar, organizar y priorizar la gestion de oportunidades comerciales, eventos y convenios corporativos en terreno
 
