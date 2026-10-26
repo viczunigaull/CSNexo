@@ -73,6 +73,4 @@ Todos los nombres, contactos y empresas corresponden exclusivamente a informacio
    * Android Studio Ladybug o superior.
    * Android SDK 34 o 35 instalado.
    * JDK 17 o JDK 21 configurado en Gradle JDK.
-2. Clonar el repositorio:
-   ```bash
-   git clone <URL_DEL_REPOSITORIO>
+
