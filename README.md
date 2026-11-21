@@ -93,7 +93,7 @@ csnexo/
     └── theme/                  # Color, Theme, Type
 ```
 
-### Microservicio (`CSNexo-Backend/src/main/kotlin/com/example/csnexo/backend/`)
+### Microservicio (`backend/src/main/kotlin/com/example/csnexo/backend/`)
 
 ```
 backend/
@@ -111,7 +111,7 @@ backend/
 ### 4.1 Levantar el microservicio (Spring Boot)
 
 ```powershell
-cd CSNexo-Backend
+cd backend
 .\gradlew.bat bootRun
 ```
 
