@@ -239,26 +239,6 @@ fun OportunidadFormScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                if (state.esEdicion) {
-                    OutlinedButton(
-                        onClick = onEliminar,
-                        enabled = !state.guardando && !state.eliminando,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                    ) {
-                        if (state.eliminando) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(22.dp),
-                                strokeWidth = 2.dp
-                            )
-                        } else {
-                            Text("Eliminar oportunidad")
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-
                 Button(
                     onClick = onGuardar,
                     enabled = !state.guardando,
