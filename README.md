@@ -60,6 +60,10 @@ centralizar, priorizar y dar seguimiento a oportunidades de activación corporat
 3. La inyección de dependencias es manual (`AppContainer` + `AppViewModelProvider`).
 4. Los mappers convierten Entity/DTO ⇄ modelo de dominio.
 
+**"Pasado de información" (Guía 11):** el formulario guarda y navega a la pantalla
+**Resumen** pasando el ID por la ruta; `ResumenViewModel` lo lee con `SavedStateHandle`
+y lo carga del repositorio. Es la misma técnica que usa la edición.
+
 ---
 
 ## 3. Mapa del proyecto (dónde está cada cosa)
@@ -88,7 +92,8 @@ csnexo/
     ├── componentes/            # CampoTexto, Selector, Tarjeta, MensajeError
     ├── oportunidades/
     │   ├── list/               # Lista + ListaOportunidadesViewModel
-    │   └── form/               # Formulario + OportunidadFormViewModel
+    │   ├── form/               # Formulario + OportunidadFormViewModel
+    │   └── resumen/            # Resumen (detalle) + ResumenViewModel
     ├── feriados/               # API externa (FeriadosViewModel)
     └── theme/                  # Color, Theme, Type
 ```

@@ -12,6 +12,7 @@ import com.example.csnexo.ui.feriados.FeriadosRoute
 import com.example.csnexo.ui.menu.MenuScreen
 import com.example.csnexo.ui.oportunidades.form.OportunidadFormRoute
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesRoute
+import com.example.csnexo.ui.oportunidades.resumen.ResumenRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -61,7 +62,7 @@ fun CSNexoNavHost(
         composable(Routes.OPORTUNIDAD_NUEVA) {
             OportunidadFormRoute(
                 onVolver = { navController.popBackStack() },
-                onGuardado = { navController.popBackStack() }
+                onGuardado = { id -> navController.navigate(Routes.resumen(id)) }
             )
         }
 
@@ -81,7 +82,21 @@ fun CSNexoNavHost(
         ) {
             OportunidadFormRoute(
                 onVolver = { navController.popBackStack() },
-                onGuardado = { navController.popBackStack() }
+                onGuardado = { id -> navController.navigate(Routes.resumen(id)) }
+            )
+        }
+
+        composable(
+            route = Routes.RESUMEN,
+            arguments = listOf(
+                navArgument(Routes.ARG_OPORTUNIDAD_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            ResumenRoute(
+                onVolver = { navController.popBackStack(Routes.OPORTUNIDADES, false) },
+                onEditar = { id -> navController.navigate(Routes.editar(id)) }
             )
         }
     }

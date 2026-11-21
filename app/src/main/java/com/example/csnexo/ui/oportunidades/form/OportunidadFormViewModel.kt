@@ -138,17 +138,21 @@ class OportunidadFormViewModel(
         _uiState.update { it.copy(guardando = true, errorGeneral = null) }
 
         viewModelScope.launch {
-            val resultado: Result<Unit> = if (esEdicion) {
-                repository.actualizar(oportunidad)
+            val resultado: Result<Long> = if (esEdicion) {
+                repository.actualizar(oportunidad).map { oportunidadId }
             } else {
-                repository.crear(oportunidad).map { Unit }
+                repository.crear(oportunidad)
             }
 
             // El evento de navegación se deriva de guardadoExitosamente.
             resultado
-                .onSuccess {
+                .onSuccess { idGuardado ->
                     _uiState.update {
-                        it.copy(guardando = false, guardadoExitosamente = true)
+                        it.copy(
+                            guardando = false,
+                            guardadoExitosamente = true,
+                            idGuardado = idGuardado
+                        )
                     }
                     // Mejor esfuerzo: también se envía al microservicio.
                     viewModelScope.launch {

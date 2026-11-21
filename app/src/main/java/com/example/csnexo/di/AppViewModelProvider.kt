@@ -12,6 +12,7 @@ import com.example.csnexo.ui.auth.SesionViewModel
 import com.example.csnexo.ui.feriados.FeriadosViewModel
 import com.example.csnexo.ui.oportunidades.form.OportunidadFormViewModel
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesViewModel
+import com.example.csnexo.ui.oportunidades.resumen.ResumenViewModel
 
 /**
  * Fábrica central de ViewModels.
@@ -48,6 +49,12 @@ object AppViewModelProvider {
         initializer {
             FeriadosViewModel(
                 api = RetrofitClient.feriadosApi
+            )
+        }
+        initializer {
+            ResumenViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.oportunidadRepository
             )
         }
     }

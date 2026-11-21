@@ -14,9 +14,13 @@ object Routes {
     const val OPORTUNIDADES = "oportunidades"
     const val OPORTUNIDAD_NUEVA = "oportunidades/nueva"
     const val OPORTUNIDAD_EDITAR = "oportunidades/editar/{id}"
+    const val RESUMEN = "oportunidades/resumen/{id}"
 
     const val ARG_OPORTUNIDAD_ID = "id"
 
     fun editar(oportunidadId: Long): String =
         "oportunidades/editar/$oportunidadId"
+
+    fun resumen(oportunidadId: Long): String =
+        "oportunidades/resumen/$oportunidadId"
 }

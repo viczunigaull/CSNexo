@@ -46,20 +46,20 @@ import com.example.csnexo.ui.oportunidades.etiqueta
 @Composable
 fun OportunidadFormRoute(
     onVolver: () -> Unit,
-    onGuardado: () -> Unit,
+    onGuardado: (Long) -> Unit,
     viewModel: OportunidadFormViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.guardadoExitosamente) {
         if (state.guardadoExitosamente) {
-            onGuardado()
+            onGuardado(state.idGuardado ?: -1L)
         }
     }
 
     LaunchedEffect(state.eliminado) {
         if (state.eliminado) {
-            onGuardado()
+            onVolver()
         }
     }
 

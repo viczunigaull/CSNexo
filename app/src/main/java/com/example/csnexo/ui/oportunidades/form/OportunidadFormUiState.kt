@@ -38,6 +38,7 @@ data class OportunidadFormUiState(
     val potencialError: String? = null,
     val errorGeneral: String? = null,
     val guardadoExitosamente: Boolean = false,
+    val idGuardado: Long? = null,
     val eliminando: Boolean = false,
     val eliminado: Boolean = false
 ) {
