@@ -15,6 +15,8 @@ import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesRoute
 import com.example.csnexo.ui.oportunidades.resumen.ResumenRoute
 import com.example.csnexo.ui.organizaciones.form.OrganizacionFormRoute
 import com.example.csnexo.ui.organizaciones.list.OrganizacionListaRoute
+import com.example.csnexo.ui.eventos.form.EventoFormRoute
+import com.example.csnexo.ui.eventos.list.EventoListaRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -44,6 +46,9 @@ fun CSNexoNavHost(
                 },
                 onAbrirOrganizaciones = {
                     navController.navigate(Routes.ORGANIZACIONES)
+                },
+                onAbrirEventos = {
+                    navController.navigate(Routes.EVENTOS)
                 },
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
@@ -129,6 +134,35 @@ fun CSNexoNavHost(
             )
         ) {
             OrganizacionFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.EVENTOS) {
+            EventoListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.EVENTO_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.eventoEditar(id)) }
+            )
+        }
+
+        composable(Routes.EVENTO_NUEVA) {
+            EventoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.EVENTO_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_EVENTO_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            EventoFormRoute(
                 onVolver = { navController.popBackStack() },
                 onGuardado = { navController.popBackStack() }
             )

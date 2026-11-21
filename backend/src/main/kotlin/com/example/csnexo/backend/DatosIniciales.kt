@@ -72,4 +72,33 @@ class DatosIniciales {
                 )
             }
         }
+
+    @Bean
+    fun sembrarEventos(repository: EventoRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Evento(
+                            nombre = "Feria Empresarial del Maule",
+                            tipo = "FERIA_EMPRESARIAL",
+                            descripcion = "Feria anual para pymes de la región.",
+                            fechaInicio = "2026-11-20",
+                            fechaTermino = "2026-11-22",
+                            comuna = "Talca",
+                            region = "Maule"
+                        ),
+                        Evento(
+                            nombre = "Jornada de beneficios municipales",
+                            tipo = "JORNADA_BENEFICIOS",
+                            descripcion = "Jornada de beneficios para la comunidad.",
+                            fechaInicio = "2026-12-05",
+                            fechaTermino = "2026-12-05",
+                            comuna = "Providencia",
+                            region = "Metropolitana"
+                        )
+                    )
+                )
+            }
+        }
 }

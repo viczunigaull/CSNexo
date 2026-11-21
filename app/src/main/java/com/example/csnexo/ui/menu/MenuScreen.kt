@@ -30,6 +30,7 @@ fun MenuScreen(
     usuario: Usuario,
     onAbrirOportunidades: () -> Unit,
     onAbrirOrganizaciones: () -> Unit,
+    onAbrirEventos: () -> Unit,
     onAbrirFeriados: () -> Unit,
     onCerrarSesion: () -> Unit,
     modifier: Modifier = Modifier
@@ -109,6 +110,29 @@ fun MenuScreen(
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
+                        text = "Eventos",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Registra ferias, jornadas y actividades donde participar.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirEventos,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir eventos")
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
                         text = "Feriados (API externa)",
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -160,6 +184,7 @@ private fun MenuScreenPreview() {
             ),
             onAbrirOportunidades = {},
             onAbrirOrganizaciones = {},
+            onAbrirEventos = {},
             onAbrirFeriados = {},
             onCerrarSesion = {}
         )

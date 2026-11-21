@@ -15,6 +15,8 @@ import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesViewModel
 import com.example.csnexo.ui.oportunidades.resumen.ResumenViewModel
 import com.example.csnexo.ui.organizaciones.form.OrganizacionFormViewModel
 import com.example.csnexo.ui.organizaciones.list.OrganizacionListaViewModel
+import com.example.csnexo.ui.eventos.form.EventoFormViewModel
+import com.example.csnexo.ui.eventos.list.EventoListaViewModel
 
 /**
  * Fábrica central de ViewModels.
@@ -70,6 +72,19 @@ object AppViewModelProvider {
                 savedStateHandle = createSavedStateHandle(),
                 repository = csnexoApplication().container.organizacionRepository,
                 servidor = csnexoApplication().container.organizacionServidor
+            )
+        }
+        initializer {
+            EventoListaViewModel(
+                repository = csnexoApplication().container.eventoRepository,
+                servidor = csnexoApplication().container.eventoServidor
+            )
+        }
+        initializer {
+            EventoFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.eventoRepository,
+                servidor = csnexoApplication().container.eventoServidor
             )
         }
     }

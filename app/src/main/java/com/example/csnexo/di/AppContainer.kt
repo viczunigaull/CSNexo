@@ -4,14 +4,17 @@ import android.content.Context
 import com.example.csnexo.data.local.AppDatabase
 import com.example.csnexo.data.local.seed.DatabaseSeeder
 import com.example.csnexo.data.preferences.sesionDataStore
+import com.example.csnexo.data.remote.EventoServidor
 import com.example.csnexo.data.remote.OportunidadServidor
 import com.example.csnexo.data.remote.OrganizacionServidor
 import com.example.csnexo.data.remote.RetrofitClient
+import com.example.csnexo.data.repository.EventoRepositoryImpl
 import com.example.csnexo.data.repository.FakeAuthRepository
 import com.example.csnexo.data.repository.OportunidadRepositoryImpl
 import com.example.csnexo.data.repository.OrganizacionRepositoryImpl
 import com.example.csnexo.data.repository.SesionRepositoryImpl
 import com.example.csnexo.domain.repository.AuthRepository
+import com.example.csnexo.domain.repository.EventoRepository
 import com.example.csnexo.domain.repository.OportunidadRepository
 import com.example.csnexo.domain.repository.OrganizacionRepository
 import com.example.csnexo.domain.repository.SesionRepository
@@ -58,6 +61,14 @@ class AppContainer(context: Context) {
 
     val organizacionServidor: OrganizacionServidor by lazy {
         OrganizacionServidor(RetrofitClient.organizacionApi)
+    }
+
+    val eventoRepository: EventoRepository by lazy {
+        EventoRepositoryImpl(database.eventoDao())
+    }
+
+    val eventoServidor: EventoServidor by lazy {
+        EventoServidor(RetrofitClient.eventoApi)
     }
 
     init {
