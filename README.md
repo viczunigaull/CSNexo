@@ -94,6 +94,9 @@ csnexo/
     │   ├── list/               # Lista + ListaOportunidadesViewModel
     │   ├── form/               # Formulario + OportunidadFormViewModel
     │   └── resumen/            # Resumen (detalle) + ResumenViewModel
+    ├── organizaciones/
+    │   ├── list/               # Lista + OrganizacionListaViewModel
+    │   └── form/               # Formulario + OrganizacionFormViewModel
     ├── feriados/               # API externa (FeriadosViewModel)
     └── theme/                  # Color, Theme, Type
 ```
@@ -145,6 +148,7 @@ Queda escuchando en `http://localhost:8080`. La base H2 está en memoria
 | POST | `/api/oportunidades` | Crear |
 | PUT | `/api/oportunidades/{id}` | Actualizar |
 | DELETE | `/api/oportunidades/{id}` | Eliminar |
+| GET/POST/PUT/DELETE | `/api/organizaciones` | CRUD de organizaciones |
 
 ---
 
@@ -192,8 +196,9 @@ Spring Data JPA · H2 · JUnit · Git/GitHub · Trello · APK firmado (release).
 
 ## 10. Estado y próximos pasos
 
-**Implementado:** autenticación, menú, CRUD completo de oportunidades (local +
-servidor), API externa (feriados), pruebas unitarias, APK firmado.
+**Implementado:** autenticación, menú, CRUD completo de oportunidades y
+organizaciones (local + servidor), resumen, API externa (feriados), pruebas
+unitarias, APK firmado.
 
-**Pendiente (alcance del caso):** módulos de eventos, organizaciones, contactos,
-seguimiento, alertas, búsqueda/filtros e historial.
+**Pendiente (alcance del caso):** módulos de eventos, contactos, seguimiento,
+alertas, búsqueda/filtros e historial.

@@ -13,6 +13,8 @@ import com.example.csnexo.ui.feriados.FeriadosViewModel
 import com.example.csnexo.ui.oportunidades.form.OportunidadFormViewModel
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesViewModel
 import com.example.csnexo.ui.oportunidades.resumen.ResumenViewModel
+import com.example.csnexo.ui.organizaciones.form.OrganizacionFormViewModel
+import com.example.csnexo.ui.organizaciones.list.OrganizacionListaViewModel
 
 /**
  * Fábrica central de ViewModels.
@@ -55,6 +57,19 @@ object AppViewModelProvider {
             ResumenViewModel(
                 savedStateHandle = createSavedStateHandle(),
                 repository = csnexoApplication().container.oportunidadRepository
+            )
+        }
+        initializer {
+            OrganizacionListaViewModel(
+                repository = csnexoApplication().container.organizacionRepository,
+                servidor = csnexoApplication().container.organizacionServidor
+            )
+        }
+        initializer {
+            OrganizacionFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.organizacionRepository,
+                servidor = csnexoApplication().container.organizacionServidor
             )
         }
     }

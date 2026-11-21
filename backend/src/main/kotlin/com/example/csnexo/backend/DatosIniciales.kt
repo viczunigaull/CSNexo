@@ -47,4 +47,29 @@ class DatosIniciales {
                 )
             }
         }
+
+    @Bean
+    fun sembrarOrganizaciones(repository: OrganizacionRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Organizacion(
+                            nombre = "Municipalidad ficticia de prueba",
+                            tipo = "MUNICIPALIDAD",
+                            rubro = "Gestión municipal",
+                            comuna = "Talca",
+                            region = "Maule"
+                        ),
+                        Organizacion(
+                            nombre = "Cámara de Comercio ficticia",
+                            tipo = "ASOCIACION",
+                            rubro = "Comercio",
+                            comuna = "Santiago",
+                            region = "Metropolitana"
+                        )
+                    )
+                )
+            }
+        }
 }

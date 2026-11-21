@@ -22,6 +22,12 @@ object RetrofitClient {
         .build()
         .create(OportunidadApi::class.java)
 
+    val organizacionApi: OrganizacionApi = Retrofit.Builder()
+        .baseUrl(URL_MICROSERVICIO)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(OrganizacionApi::class.java)
+
     val feriadosApi: FeriadosApi = Retrofit.Builder()
         .baseUrl(URL_API_EXTERNA)
         .addConverterFactory(GsonConverterFactory.create())

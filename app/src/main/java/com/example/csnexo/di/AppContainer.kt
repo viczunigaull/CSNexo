@@ -5,12 +5,15 @@ import com.example.csnexo.data.local.AppDatabase
 import com.example.csnexo.data.local.seed.DatabaseSeeder
 import com.example.csnexo.data.preferences.sesionDataStore
 import com.example.csnexo.data.remote.OportunidadServidor
+import com.example.csnexo.data.remote.OrganizacionServidor
 import com.example.csnexo.data.remote.RetrofitClient
 import com.example.csnexo.data.repository.FakeAuthRepository
 import com.example.csnexo.data.repository.OportunidadRepositoryImpl
+import com.example.csnexo.data.repository.OrganizacionRepositoryImpl
 import com.example.csnexo.data.repository.SesionRepositoryImpl
 import com.example.csnexo.domain.repository.AuthRepository
 import com.example.csnexo.domain.repository.OportunidadRepository
+import com.example.csnexo.domain.repository.OrganizacionRepository
 import com.example.csnexo.domain.repository.SesionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +50,14 @@ class AppContainer(context: Context) {
 
     val oportunidadServidor: OportunidadServidor by lazy {
         OportunidadServidor(RetrofitClient.oportunidadApi)
+    }
+
+    val organizacionRepository: OrganizacionRepository by lazy {
+        OrganizacionRepositoryImpl(database.organizacionDao())
+    }
+
+    val organizacionServidor: OrganizacionServidor by lazy {
+        OrganizacionServidor(RetrofitClient.organizacionApi)
     }
 
     init {

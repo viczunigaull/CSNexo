@@ -13,6 +13,8 @@ import com.example.csnexo.ui.menu.MenuScreen
 import com.example.csnexo.ui.oportunidades.form.OportunidadFormRoute
 import com.example.csnexo.ui.oportunidades.list.ListaOportunidadesRoute
 import com.example.csnexo.ui.oportunidades.resumen.ResumenRoute
+import com.example.csnexo.ui.organizaciones.form.OrganizacionFormRoute
+import com.example.csnexo.ui.organizaciones.list.OrganizacionListaRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -39,6 +41,9 @@ fun CSNexoNavHost(
                 usuario = usuario,
                 onAbrirOportunidades = {
                     navController.navigate(Routes.OPORTUNIDADES)
+                },
+                onAbrirOrganizaciones = {
+                    navController.navigate(Routes.ORGANIZACIONES)
                 },
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
@@ -97,6 +102,35 @@ fun CSNexoNavHost(
             ResumenRoute(
                 onVolver = { navController.popBackStack(Routes.OPORTUNIDADES, false) },
                 onEditar = { id -> navController.navigate(Routes.editar(id)) }
+            )
+        }
+
+        composable(Routes.ORGANIZACIONES) {
+            OrganizacionListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.ORGANIZACION_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.organizacionEditar(id)) }
+            )
+        }
+
+        composable(Routes.ORGANIZACION_NUEVA) {
+            OrganizacionFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.ORGANIZACION_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_ORGANIZACION_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            OrganizacionFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
             )
         }
     }
