@@ -11,6 +11,7 @@ object Routes {
 
     const val MENU = "menu"
     const val FERIADOS = "feriados"
+    const val ALERTAS = "alertas"
     const val OPORTUNIDADES = "oportunidades"
     const val OPORTUNIDAD_NUEVA = "oportunidades/nueva"
     const val OPORTUNIDAD_EDITAR = "oportunidades/editar/{id}"

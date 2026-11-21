@@ -106,6 +106,7 @@ csnexo/
     ├── seguimientos/
     │   ├── list/               # Lista + SeguimientoListaViewModel
     │   └── form/               # Formulario + SeguimientoFormViewModel
+    ├── alertas/                # Resumen (eventos próximos + seguimientos)
     ├── feriados/               # API externa (FeriadosViewModel)
     └── theme/                  # Color, Theme, Type
 ```
@@ -210,6 +211,6 @@ Spring Data JPA · H2 · JUnit · Git/GitHub · Trello · APK firmado (release).
 
 **Implementado:** autenticación, menú, CRUD completo de oportunidades,
 organizaciones, eventos, contactos y seguimientos (local + servidor), resumen,
-API externa (feriados), pruebas unitarias, APK firmado.
+alertas, API externa (feriados), pruebas unitarias, APK firmado.
 
-**Pendiente (alcance del caso):** alertas, búsqueda/filtros e historial.
+**Pendiente (alcance del caso):** búsqueda/filtros e historial.

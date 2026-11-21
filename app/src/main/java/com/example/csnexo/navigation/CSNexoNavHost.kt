@@ -21,6 +21,7 @@ import com.example.csnexo.ui.contactos.form.ContactoFormRoute
 import com.example.csnexo.ui.contactos.list.ContactoListaRoute
 import com.example.csnexo.ui.seguimientos.form.SeguimientoFormRoute
 import com.example.csnexo.ui.seguimientos.list.SeguimientoListaRoute
+import com.example.csnexo.ui.alertas.AlertasRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -60,6 +61,9 @@ fun CSNexoNavHost(
                 onAbrirSeguimientos = {
                     navController.navigate(Routes.SEGUIMIENTOS)
                 },
+                onAbrirAlertas = {
+                    navController.navigate(Routes.ALERTAS)
+                },
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
                 },
@@ -88,6 +92,12 @@ fun CSNexoNavHost(
 
         composable(Routes.FERIADOS) {
             FeriadosRoute(
+                onVolver = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.ALERTAS) {
+            AlertasRoute(
                 onVolver = { navController.popBackStack() }
             )
         }

@@ -33,6 +33,7 @@ fun MenuScreen(
     onAbrirEventos: () -> Unit,
     onAbrirContactos: () -> Unit,
     onAbrirSeguimientos: () -> Unit,
+    onAbrirAlertas: () -> Unit,
     onAbrirFeriados: () -> Unit,
     onCerrarSesion: () -> Unit,
     modifier: Modifier = Modifier
@@ -181,6 +182,29 @@ fun MenuScreen(
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
+                        text = "Alertas",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Eventos próximos y seguimientos recientes.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirAlertas,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Ver alertas")
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
                         text = "Feriados (API externa)",
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -235,6 +259,7 @@ private fun MenuScreenPreview() {
             onAbrirEventos = {},
             onAbrirContactos = {},
             onAbrirSeguimientos = {},
+            onAbrirAlertas = {},
             onAbrirFeriados = {},
             onCerrarSesion = {}
         )
