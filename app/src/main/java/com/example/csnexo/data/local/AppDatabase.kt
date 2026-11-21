@@ -4,16 +4,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.csnexo.data.local.dao.ContactoDao
 import com.example.csnexo.data.local.dao.EventoDao
 import com.example.csnexo.data.local.dao.OportunidadDao
 import com.example.csnexo.data.local.dao.OrganizacionDao
+import com.example.csnexo.data.local.entity.ContactoEntity
 import com.example.csnexo.data.local.entity.EventoEntity
 import com.example.csnexo.data.local.entity.OportunidadEntity
 import com.example.csnexo.data.local.entity.OrganizacionEntity
 
 @Database(
-    entities = [OportunidadEntity::class, OrganizacionEntity::class, EventoEntity::class],
-    version = 3,
+    entities = [
+        OportunidadEntity::class,
+        OrganizacionEntity::class,
+        EventoEntity::class,
+        ContactoEntity::class
+    ],
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -23,6 +30,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun organizacionDao(): OrganizacionDao
 
     abstract fun eventoDao(): EventoDao
+
+    abstract fun contactoDao(): ContactoDao
 
     companion object {
         private const val NOMBRE_BASE = "csnexo.db"

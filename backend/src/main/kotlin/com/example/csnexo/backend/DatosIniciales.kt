@@ -101,4 +101,31 @@ class DatosIniciales {
                 )
             }
         }
+
+    @Bean
+    fun sembrarContactos(repository: ContactoRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Contacto(
+                            nombre = "Carolina Pérez",
+                            organizacion = "Municipalidad ficticia de prueba",
+                            cargo = "Encargada de eventos",
+                            area = "EVENTOS",
+                            correo = "carolina.perez@ejemplo.cl",
+                            telefono = "+56 9 1234 5678"
+                        ),
+                        Contacto(
+                            nombre = "Jorge Soto",
+                            organizacion = "Cámara de Comercio ficticia",
+                            cargo = "Coordinador de ferias",
+                            area = "ACTIVACIONES",
+                            correo = "jorge.soto@ejemplo.cl",
+                            telefono = "+56 9 8765 4321"
+                        )
+                    )
+                )
+            }
+        }
 }

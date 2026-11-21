@@ -17,6 +17,8 @@ import com.example.csnexo.ui.organizaciones.form.OrganizacionFormRoute
 import com.example.csnexo.ui.organizaciones.list.OrganizacionListaRoute
 import com.example.csnexo.ui.eventos.form.EventoFormRoute
 import com.example.csnexo.ui.eventos.list.EventoListaRoute
+import com.example.csnexo.ui.contactos.form.ContactoFormRoute
+import com.example.csnexo.ui.contactos.list.ContactoListaRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -49,6 +51,9 @@ fun CSNexoNavHost(
                 },
                 onAbrirEventos = {
                     navController.navigate(Routes.EVENTOS)
+                },
+                onAbrirContactos = {
+                    navController.navigate(Routes.CONTACTOS)
                 },
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
@@ -163,6 +168,35 @@ fun CSNexoNavHost(
             )
         ) {
             EventoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.CONTACTOS) {
+            ContactoListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.CONTACTO_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.contactoEditar(id)) }
+            )
+        }
+
+        composable(Routes.CONTACTO_NUEVA) {
+            ContactoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.CONTACTO_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_CONTACTO_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            ContactoFormRoute(
                 onVolver = { navController.popBackStack() },
                 onGuardado = { navController.popBackStack() }
             )
