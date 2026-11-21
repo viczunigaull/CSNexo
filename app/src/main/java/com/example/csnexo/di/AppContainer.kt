@@ -9,17 +9,20 @@ import com.example.csnexo.data.remote.EventoServidor
 import com.example.csnexo.data.remote.OportunidadServidor
 import com.example.csnexo.data.remote.OrganizacionServidor
 import com.example.csnexo.data.remote.RetrofitClient
+import com.example.csnexo.data.remote.SeguimientoServidor
 import com.example.csnexo.data.repository.ContactoRepositoryImpl
 import com.example.csnexo.data.repository.EventoRepositoryImpl
 import com.example.csnexo.data.repository.FakeAuthRepository
 import com.example.csnexo.data.repository.OportunidadRepositoryImpl
 import com.example.csnexo.data.repository.OrganizacionRepositoryImpl
+import com.example.csnexo.data.repository.SeguimientoRepositoryImpl
 import com.example.csnexo.data.repository.SesionRepositoryImpl
 import com.example.csnexo.domain.repository.AuthRepository
 import com.example.csnexo.domain.repository.ContactoRepository
 import com.example.csnexo.domain.repository.EventoRepository
 import com.example.csnexo.domain.repository.OportunidadRepository
 import com.example.csnexo.domain.repository.OrganizacionRepository
+import com.example.csnexo.domain.repository.SeguimientoRepository
 import com.example.csnexo.domain.repository.SesionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -80,6 +83,14 @@ class AppContainer(context: Context) {
 
     val contactoServidor: ContactoServidor by lazy {
         ContactoServidor(RetrofitClient.contactoApi)
+    }
+
+    val seguimientoRepository: SeguimientoRepository by lazy {
+        SeguimientoRepositoryImpl(database.seguimientoDao())
+    }
+
+    val seguimientoServidor: SeguimientoServidor by lazy {
+        SeguimientoServidor(RetrofitClient.seguimientoApi)
     }
 
     init {

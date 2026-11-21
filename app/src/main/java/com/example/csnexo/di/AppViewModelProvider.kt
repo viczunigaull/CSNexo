@@ -19,6 +19,8 @@ import com.example.csnexo.ui.eventos.form.EventoFormViewModel
 import com.example.csnexo.ui.eventos.list.EventoListaViewModel
 import com.example.csnexo.ui.contactos.form.ContactoFormViewModel
 import com.example.csnexo.ui.contactos.list.ContactoListaViewModel
+import com.example.csnexo.ui.seguimientos.form.SeguimientoFormViewModel
+import com.example.csnexo.ui.seguimientos.list.SeguimientoListaViewModel
 
 /**
  * Fábrica central de ViewModels.
@@ -100,6 +102,19 @@ object AppViewModelProvider {
                 savedStateHandle = createSavedStateHandle(),
                 repository = csnexoApplication().container.contactoRepository,
                 servidor = csnexoApplication().container.contactoServidor
+            )
+        }
+        initializer {
+            SeguimientoListaViewModel(
+                repository = csnexoApplication().container.seguimientoRepository,
+                servidor = csnexoApplication().container.seguimientoServidor
+            )
+        }
+        initializer {
+            SeguimientoFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.seguimientoRepository,
+                servidor = csnexoApplication().container.seguimientoServidor
             )
         }
     }

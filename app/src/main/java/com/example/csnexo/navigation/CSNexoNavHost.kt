@@ -19,6 +19,8 @@ import com.example.csnexo.ui.eventos.form.EventoFormRoute
 import com.example.csnexo.ui.eventos.list.EventoListaRoute
 import com.example.csnexo.ui.contactos.form.ContactoFormRoute
 import com.example.csnexo.ui.contactos.list.ContactoListaRoute
+import com.example.csnexo.ui.seguimientos.form.SeguimientoFormRoute
+import com.example.csnexo.ui.seguimientos.list.SeguimientoListaRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -54,6 +56,9 @@ fun CSNexoNavHost(
                 },
                 onAbrirContactos = {
                     navController.navigate(Routes.CONTACTOS)
+                },
+                onAbrirSeguimientos = {
+                    navController.navigate(Routes.SEGUIMIENTOS)
                 },
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
@@ -197,6 +202,35 @@ fun CSNexoNavHost(
             )
         ) {
             ContactoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.SEGUIMIENTOS) {
+            SeguimientoListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.SEGUIMIENTO_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.seguimientoEditar(id)) }
+            )
+        }
+
+        composable(Routes.SEGUIMIENTO_NUEVA) {
+            SeguimientoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.SEGUIMIENTO_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_SEGUIMIENTO_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            SeguimientoFormRoute(
                 onVolver = { navController.popBackStack() },
                 onGuardado = { navController.popBackStack() }
             )

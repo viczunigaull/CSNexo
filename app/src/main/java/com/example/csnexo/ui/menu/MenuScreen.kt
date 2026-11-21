@@ -32,6 +32,7 @@ fun MenuScreen(
     onAbrirOrganizaciones: () -> Unit,
     onAbrirEventos: () -> Unit,
     onAbrirContactos: () -> Unit,
+    onAbrirSeguimientos: () -> Unit,
     onAbrirFeriados: () -> Unit,
     onCerrarSesion: () -> Unit,
     modifier: Modifier = Modifier
@@ -157,6 +158,29 @@ fun MenuScreen(
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
+                        text = "Seguimiento",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Registra las acciones de seguimiento de cada oportunidad.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirSeguimientos,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir seguimiento")
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
                         text = "Feriados (API externa)",
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -210,6 +234,7 @@ private fun MenuScreenPreview() {
             onAbrirOrganizaciones = {},
             onAbrirEventos = {},
             onAbrirContactos = {},
+            onAbrirSeguimientos = {},
             onAbrirFeriados = {},
             onCerrarSesion = {}
         )

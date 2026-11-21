@@ -128,4 +128,27 @@ class DatosIniciales {
                 )
             }
         }
+
+    @Bean
+    fun sembrarSeguimientos(repository: SeguimientoRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Seguimiento(
+                            oportunidad = "Patrocinio Feria Empresarial del Maule",
+                            tipoAccion = "PRIMER_CONTACTO",
+                            fecha = "2026-11-15",
+                            resultado = "Se contactó a la encargada del evento."
+                        ),
+                        Seguimiento(
+                            oportunidad = "Charla de beneficios para pymes",
+                            tipoAccion = "INVESTIGACION_INICIAL",
+                            fecha = "2026-11-12",
+                            resultado = "Se revisó el sitio de la municipalidad."
+                        )
+                    )
+                )
+            }
+        }
 }
