@@ -36,6 +36,7 @@ import com.example.csnexo.domain.model.Oportunidad
 import com.example.csnexo.domain.model.PotencialComercial
 import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
+import com.example.csnexo.ui.components.Selector
 import com.example.csnexo.ui.components.Tarjeta
 import com.example.csnexo.ui.oportunidades.etiqueta
 import com.example.csnexo.ui.theme.CSNexoTheme
@@ -57,7 +58,8 @@ fun ListaOportunidadesRoute(
         onAgregar = onAgregar,
         onEditar = onEditar,
         onReintentar = viewModel::reintentar,
-        onSincronizar = viewModel::sincronizar
+        onSincronizar = viewModel::sincronizar,
+        onFiltroEstadoChange = viewModel::onFiltroEstadoChange
     )
 }
 
@@ -70,6 +72,7 @@ fun ListaOportunidadesScreen(
     onEditar: (Long) -> Unit,
     onReintentar: () -> Unit,
     onSincronizar: () -> Unit,
+    onFiltroEstadoChange: (EstadoOportunidad?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -144,6 +147,23 @@ fun ListaOportunidadesScreen(
                         ),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        item(key = "filtro") {
+                            Column {
+                                Selector(
+                                    label = "Filtrar por estado",
+                                    seleccionado = state.filtroEstado,
+                                    opciones = EstadoOportunidad.entries,
+                                    etiqueta = { it.etiqueta() },
+                                    onSeleccion = onFiltroEstadoChange,
+                                    vacio = "Todos los estados"
+                                )
+                                if (state.filtroEstado != null) {
+                                    TextButton(onClick = { onFiltroEstadoChange(null) }) {
+                                        Text("Limpiar filtro")
+                                    }
+                                }
+                            }
+                        }
                         if (state.mensaje != null) {
                             item(key = "mensaje") {
                                 Text(
@@ -259,7 +279,8 @@ private fun ListaOportunidadesPreview() {
             onAgregar = {},
             onEditar = {},
             onReintentar = {},
-            onSincronizar = {}
+            onSincronizar = {},
+            onFiltroEstadoChange = {}
         )
     }
 }

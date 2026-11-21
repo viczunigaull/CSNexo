@@ -211,6 +211,7 @@ Spring Data JPA · H2 · JUnit · Git/GitHub · Trello · APK firmado (release).
 
 **Implementado:** autenticación, menú, CRUD completo de oportunidades,
 organizaciones, eventos, contactos y seguimientos (local + servidor), resumen,
-alertas, API externa (feriados), pruebas unitarias, APK firmado.
+alertas, filtros, API externa (feriados), pruebas unitarias, APK firmado.
 
-**Pendiente (alcance del caso):** búsqueda/filtros e historial.
+**Nota:** el "historial" de una oportunidad se cubre con el módulo Seguimiento
+(acciones registradas por fecha).

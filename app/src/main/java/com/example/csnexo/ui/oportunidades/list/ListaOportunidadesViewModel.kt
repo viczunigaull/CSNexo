@@ -3,6 +3,8 @@ package com.example.csnexo.ui.oportunidades.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.csnexo.data.remote.OportunidadServidor
+import com.example.csnexo.domain.model.EstadoOportunidad
+import com.example.csnexo.domain.model.Oportunidad
 import com.example.csnexo.domain.repository.OportunidadRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -29,6 +31,7 @@ class ListaOportunidadesViewModel(
     val uiState: StateFlow<ListaOportunidadesUiState> = _uiState.asStateFlow()
 
     private var observacion: Job? = null
+    private var todas: List<Oportunidad> = emptyList()
 
     init {
         observar()
@@ -37,6 +40,19 @@ class ListaOportunidadesViewModel(
     fun reintentar() {
         observar()
     }
+
+    /** Filtra la lista por estado; null muestra todas. */
+    fun onFiltroEstadoChange(estado: EstadoOportunidad?) {
+        _uiState.update {
+            it.copy(filtroEstado = estado, oportunidades = filtrar(todas, estado))
+        }
+    }
+
+    private fun filtrar(
+        lista: List<Oportunidad>,
+        filtro: EstadoOportunidad?
+    ): List<Oportunidad> =
+        if (filtro == null) lista else lista.filter { it.estadoGestion == filtro }
 
     /**
      * Trae las oportunidades desde el microservicio y reemplaza la lista local.
@@ -94,8 +110,9 @@ class ListaOportunidadesViewModel(
                     }
                 }
                 .collect { oportunidades ->
+                    todas = oportunidades
                     _uiState.update {
-                        it.copy(cargando = false, oportunidades = oportunidades)
+                        it.copy(cargando = false, oportunidades = filtrar(todas, it.filtroEstado))
                     }
                 }
         }
