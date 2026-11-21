@@ -1,0 +1,142 @@
+package com.example.csnexo.ui.menu
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.csnexo.domain.model.RolUsuario
+import com.example.csnexo.domain.model.Usuario
+import com.example.csnexo.ui.theme.CSNexoTheme
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MenuScreen(
+    usuario: Usuario,
+    onAbrirOportunidades: () -> Unit,
+    onAbrirFeriados: () -> Unit,
+    onCerrarSesion: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(title = { Text("CSNexo") })
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 24.dp)
+        ) {
+            Text(
+                text = "Hola, ${usuario.nombre}",
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Text(
+                text = "${usuario.rol.etiqueta()} · ${usuario.usuario}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Oportunidades",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Crea, edita y revisa las oportunidades registradas en el dispositivo.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirOportunidades,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir oportunidades")
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Feriados (API externa)",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Consulta fechas relevantes desde una API pública.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirFeriados,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Ver feriados")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            OutlinedButton(
+                onClick = onCerrarSesion,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cerrar sesión")
+            }
+        }
+    }
+}
+
+private fun RolUsuario.etiqueta(): String = when (this) {
+    RolUsuario.EJECUTIVO -> "Ejecutivo comercial"
+    RolUsuario.SUPERVISOR -> "Supervisor"
+    RolUsuario.MARKETING -> "Marketing"
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MenuScreenPreview() {
+    CSNexoTheme {
+        MenuScreen(
+            usuario = Usuario(
+                id = "u-ejecutivo",
+                nombre = "Ejecutiva Demo",
+                usuario = "ejecutivo.demo",
+                rol = RolUsuario.EJECUTIVO
+            ),
+            onAbrirOportunidades = {},
+            onAbrirFeriados = {},
+            onCerrarSesion = {}
+        )
+    }
+}
