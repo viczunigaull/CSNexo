@@ -61,6 +61,14 @@ class SeguimientoListaViewModel(
         }
     }
 
+    /** Elimina el seguimiento en local y en el servidor. */
+    fun eliminar(id: Long) {
+        viewModelScope.launch {
+            repository.eliminar(id)
+            servidor.eliminar(id)
+        }
+    }
+
     private fun observar() {
         observacion?.cancel()
         observacion = viewModelScope.launch {

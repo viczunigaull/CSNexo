@@ -87,6 +87,8 @@ fun MenuScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -109,6 +111,8 @@ fun MenuScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
@@ -133,6 +137,8 @@ fun MenuScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -155,6 +161,8 @@ fun MenuScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
@@ -179,6 +187,8 @@ fun MenuScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -201,6 +211,8 @@ fun MenuScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {

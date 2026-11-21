@@ -21,6 +21,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.csnexo.di.AppViewModelProvider
+import com.example.csnexo.domain.model.Seguimiento
+import com.example.csnexo.ui.components.ConfirmarEliminacion
 import com.example.csnexo.ui.components.Tarjeta
 import com.example.csnexo.ui.seguimientos.etiqueta
 
@@ -46,7 +51,8 @@ fun SeguimientoListaRoute(
         onAgregar = onAgregar,
         onEditar = onEditar,
         onReintentar = viewModel::reintentar,
-        onSincronizar = viewModel::sincronizar
+        onSincronizar = viewModel::sincronizar,
+        onEliminar = viewModel::eliminar
     )
 }
 
@@ -59,8 +65,11 @@ fun SeguimientoListaScreen(
     onEditar: (Long) -> Unit,
     onReintentar: () -> Unit,
     onSincronizar: () -> Unit,
+    onEliminar: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var seguimientoAEliminar by remember { mutableStateOf<Seguimiento?>(null) }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -132,12 +141,26 @@ fun SeguimientoListaScreen(
                                     seguimiento.oportunidad,
                                     seguimiento.resultado
                                 ),
-                                onClick = { onEditar(seguimiento.id) }
+                                onClick = { onEditar(seguimiento.id) },
+                                onEliminar = { seguimientoAEliminar = seguimiento }
                             )
                         }
                     }
                 }
             }
+        }
+
+        val aEliminar = seguimientoAEliminar
+        if (aEliminar != null) {
+            ConfirmarEliminacion(
+                titulo = "Eliminar seguimiento",
+                mensaje = "¿Seguro que quieres eliminar este seguimiento? Esta acción no se puede deshacer.",
+                onConfirmar = {
+                    onEliminar(aEliminar.id)
+                    seguimientoAEliminar = null
+                },
+                onCancelar = { seguimientoAEliminar = null }
+            )
         }
     }
 }

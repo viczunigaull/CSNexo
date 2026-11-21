@@ -26,9 +26,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -39,6 +41,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -295,7 +298,8 @@ fun Tarjeta(
     titulo: String,
     lineas: List<String>,
     onClick: (() -> Unit)? = null,
-    destacado: Boolean = false
+    destacado: Boolean = false,
+    onEliminar: (() -> Unit)? = null
 ) {
     val aparecer = remember { MutableTransitionState(false).apply { targetState = true } }
     val interaccion = remember { MutableInteractionSource() }
@@ -337,11 +341,23 @@ fun Tarjeta(
                 modifier = Modifier.padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Text(
-                    text = titulo,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = titulo,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    if (onEliminar != null) {
+                        IconButton(onClick = onEliminar) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Eliminar",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
                 lineas.filter { it.isNotBlank() }.forEach { linea ->
                     Text(
                         text = linea,
@@ -351,4 +367,31 @@ fun Tarjeta(
             }
         }
     }
+}
+
+/**
+ * Diálogo de confirmación reutilizable para eliminar un registro.
+ */
+@Composable
+fun ConfirmarEliminacion(
+    titulo: String,
+    mensaje: String,
+    onConfirmar: () -> Unit,
+    onCancelar: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onCancelar,
+        title = { Text(titulo) },
+        text = { Text(mensaje) },
+        confirmButton = {
+            TextButton(onClick = onConfirmar) {
+                Text("Eliminar")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onCancelar) {
+                Text("Cancelar")
+            }
+        }
+    )
 }

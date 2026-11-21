@@ -21,6 +21,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -36,6 +39,7 @@ import com.example.csnexo.domain.model.Oportunidad
 import com.example.csnexo.domain.model.PotencialComercial
 import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
+import com.example.csnexo.ui.components.ConfirmarEliminacion
 import com.example.csnexo.ui.components.Selector
 import com.example.csnexo.ui.components.Tarjeta
 import com.example.csnexo.ui.oportunidades.etiqueta
@@ -59,7 +63,8 @@ fun ListaOportunidadesRoute(
         onEditar = onEditar,
         onReintentar = viewModel::reintentar,
         onSincronizar = viewModel::sincronizar,
-        onFiltroEstadoChange = viewModel::onFiltroEstadoChange
+        onFiltroEstadoChange = viewModel::onFiltroEstadoChange,
+        onEliminar = viewModel::eliminar
     )
 }
 
@@ -73,8 +78,11 @@ fun ListaOportunidadesScreen(
     onReintentar: () -> Unit,
     onSincronizar: () -> Unit,
     onFiltroEstadoChange: (EstadoOportunidad?) -> Unit,
+    onEliminar: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var oportunidadAEliminar by remember { mutableStateOf<Oportunidad?>(null) }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -183,12 +191,26 @@ fun ListaOportunidadesScreen(
                                     "${oportunidad.tipo.etiqueta()} · Prioridad ${oportunidad.prioridad.etiqueta()}",
                                     "Estado: ${oportunidad.estadoGestion.etiqueta()}"
                                 ),
-                                onClick = { onEditar(oportunidad.id) }
+                                onClick = { onEditar(oportunidad.id) },
+                                onEliminar = { oportunidadAEliminar = oportunidad }
                             )
                         }
                     }
                 }
             }
+        }
+
+        val aEliminar = oportunidadAEliminar
+        if (aEliminar != null) {
+            ConfirmarEliminacion(
+                titulo = "Eliminar oportunidad",
+                mensaje = "¿Seguro que quieres eliminar \"${aEliminar.nombre}\"? Esta acción no se puede deshacer.",
+                onConfirmar = {
+                    onEliminar(aEliminar.id)
+                    oportunidadAEliminar = null
+                },
+                onCancelar = { oportunidadAEliminar = null }
+            )
         }
     }
 }
@@ -280,7 +302,8 @@ private fun ListaOportunidadesPreview() {
             onEditar = {},
             onReintentar = {},
             onSincronizar = {},
-            onFiltroEstadoChange = {}
+            onFiltroEstadoChange = {},
+            onEliminar = {}
         )
     }
 }
