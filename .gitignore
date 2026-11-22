@@ -5,6 +5,7 @@
 .kotlin/
 .tmp/
 .tools/
+.idea/
 /local.properties
 /.idea/caches
 /.idea/libraries
