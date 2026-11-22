@@ -56,7 +56,7 @@ fun FeriadosScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Feriados (API externa)") },
+                title = { Text("Feriados") },
                 navigationIcon = {
                     TextButton(onClick = onVolver) { Text("Menú") }
                 }

@@ -217,11 +217,11 @@ fun MenuScreen(
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "Feriados (API externa)",
+                        text = "Feriados",
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
-                        text = "Consulta fechas relevantes desde una API pública.",
+                        text = "Consulta los feriados oficiales del año.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 6.dp)
