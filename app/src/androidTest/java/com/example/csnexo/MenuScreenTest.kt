@@ -38,6 +38,8 @@ class MenuScreenTest {
                     onAbrirSeguimientos = {},
                     onAbrirAlertas = {},
                     onAbrirFeriados = {},
+                    onAbrirActivaciones = {},
+                    onAbrirResultados = {},
                     onCerrarSesion = {}
                 )
             }
