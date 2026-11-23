@@ -3,7 +3,7 @@
 **Caso:** Caso_DSY1105_003D
 **Asignatura:** DSY1105 · Desarrollo de Aplicaciones Móviles
 **Integrantes:** `[completar nombre y apellido de cada integrante]`
-**Repositorio:** `https://github.com/.../CSNexo`
+**Repositorio:** `https://github.com/viczunigaull/CSNexo`
 
 Aplicación móvil (**Kotlin + Jetpack Compose**) y microservicio (**Spring Boot**) para
 centralizar, priorizar y dar seguimiento a oportunidades de activación corporativa
@@ -19,6 +19,9 @@ centralizar, priorizar y dar seguimiento a oportunidades de activación corporat
 | Menú principal | Navigation Compose |
 | Listar oportunidades | `Flow` de Room (reactivo) |
 | Crear / editar / eliminar oportunidad | `OportunidadFormViewModel` + validaciones |
+| **Buscar y filtrar oportunidades** | búsqueda por texto (nombre/descripción) + filtro por estado |
+| **Coordinar activaciones** | módulo Activaciones (CRUD local + servidor) |
+| **Registrar resultados** | módulo Resultados (CRUD local + servidor) |
 | Persistencia local (offline) | Room (SQLite) |
 | **Microservicio propio** | Spring Boot + H2 (CRUD REST) |
 | **Sincronizar con el servidor** | Retrofit + `OportunidadServidor` |
@@ -33,7 +36,8 @@ centralizar, priorizar y dar seguimiento a oportunidades de activación corporat
 ```
 ┌────────────────────────────────────────────────────────────┐
 │                        UI (Compose)                        │
-│  Login · Menú · Lista · Formulario · Feriados              │
+│  Login · Menú · Oportunidades · Activaciones · Resultados  │
+│  Feriados · Alertas                                        │
 │  Solo recibe estado (UiState) y emite eventos (callbacks)  │
 └───────────────────────────┬────────────────────────────────┘
                             │ StateFlow / callbacks
@@ -106,6 +110,12 @@ csnexo/
     ├── seguimientos/
     │   ├── list/               # Lista + SeguimientoListaViewModel
     │   └── form/               # Formulario + SeguimientoFormViewModel
+    ├── activaciones/
+    │   ├── list/               # Lista + ActivacionListaViewModel
+    │   └── form/               # Formulario + ActivacionFormViewModel
+    ├── resultados/
+    │   ├── list/               # Lista + ResultadoListaViewModel
+    │   └── form/               # Formulario + ResultadoFormViewModel
     ├── alertas/                # Resumen (eventos próximos + seguimientos)
     ├── feriados/               # API externa (FeriadosViewModel)
     └── theme/                  # Color, Theme, Type
@@ -116,10 +126,14 @@ csnexo/
 ```
 backend/
 ├── CsnexoBackendApplication.kt  # main() → levanta Spring Boot en :8080
-├── Oportunidad.kt               # Entidad JPA (tabla "oportunidades")
-├── OportunidadRepository.kt     # Spring Data JPA (CRUD automático)
-├── OportunidadController.kt     # Endpoints REST /api/oportunidades
-└── DatosIniciales.kt            # Siembra 2 oportunidades ficticias
+├── Oportunidad*.kt              # Entidad + repo + controlador (/api/oportunidades)
+├── Organizacion*.kt             # CRUD REST (/api/organizaciones)
+├── Evento*.kt                   # CRUD REST (/api/eventos)
+├── Contacto*.kt                 # CRUD REST (/api/contactos)
+├── Seguimiento*.kt              # CRUD REST (/api/seguimientos)
+├── Activacion*.kt               # CRUD REST (/api/activaciones)
+├── Resultado*.kt                # CRUD REST (/api/resultados)
+└── DatosIniciales.kt            # Siembra datos ficticios de cada módulo
 ```
 
 ---
@@ -162,6 +176,8 @@ Queda escuchando en `http://localhost:8080`. La base H2 está en memoria
 | GET/POST/PUT/DELETE | `/api/eventos` | CRUD de eventos |
 | GET/POST/PUT/DELETE | `/api/contactos` | CRUD de contactos |
 | GET/POST/PUT/DELETE | `/api/seguimientos` | CRUD de seguimientos |
+| GET/POST/PUT/DELETE | `/api/activaciones` | CRUD de activaciones |
+| GET/POST/PUT/DELETE | `/api/resultados` | CRUD de resultados |
 
 ---
 
@@ -180,8 +196,15 @@ cd CSNexo-Vicente
 ```
 
 Se prueban los mappers (Entity/DTO ⇄ dominio) y los ViewModels (login,
-formulario de oportunidades y feriados) usando JUnit + `kotlinx-coroutines-test`
-y fakes (no se necesita dispositivo).
+formulario de oportunidades y feriados) con **Kotest (StringSpec) + JUnit 5 +
+MockK** y `kotlinx-coroutines-test` para los dispatchers.
+
+También hay **pruebas de interfaz** (Compose UI) en `app/src/androidTest/`
+(`LoginScreenTest`, `MenuScreenTest`). Necesitan un emulador/dispositivo:
+
+```powershell
+.\gradlew.bat connectedDebugAndroidTest
+```
 
 ---
 
@@ -203,15 +226,17 @@ cd CSNexo-Vicente
 
 Kotlin · Android Studio · Jetpack Compose · Material 3 · MVVM · Room (SQLite) ·
 DataStore · Navigation Compose · CameraX · Retrofit + Gson · Spring Boot ·
-Spring Data JPA · H2 · JUnit · Git/GitHub · Trello · APK firmado (release).
+Spring Data JPA · H2 · JUnit 5 · Kotest · MockK · Git/GitHub · Trello · APK firmado (release).
 
 ---
 
 ## 10. Estado y próximos pasos
 
 **Implementado:** autenticación, menú, CRUD completo de oportunidades,
-organizaciones, eventos, contactos y seguimientos (local + servidor), resumen,
-alertas, filtros, API externa (feriados), pruebas unitarias, APK firmado.
+organizaciones, eventos, contactos, seguimientos, **activaciones** y
+**resultados** (local + servidor), resumen, alertas, filtro por estado y
+**búsqueda por texto**, API externa (feriados), pruebas unitarias
+(Kotest + JUnit 5 + MockK), pruebas de UI (androidTest) y APK firmado.
 
 **Nota:** el "historial" de una oportunidad se cubre con el módulo Seguimiento
 (acciones registradas por fecha).
