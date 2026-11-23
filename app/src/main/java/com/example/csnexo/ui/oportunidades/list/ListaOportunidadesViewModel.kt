@@ -44,15 +44,31 @@ class ListaOportunidadesViewModel(
     /** Filtra la lista por estado; null muestra todas. */
     fun onFiltroEstadoChange(estado: EstadoOportunidad?) {
         _uiState.update {
-            it.copy(filtroEstado = estado, oportunidades = filtrar(todas, estado))
+            it.copy(filtroEstado = estado, oportunidades = filtrar(todas, estado, it.busqueda))
+        }
+    }
+
+    /** Filtra la lista por texto (nombre o descripción). */
+    fun onBusquedaChange(valor: String) {
+        _uiState.update {
+            it.copy(busqueda = valor, oportunidades = filtrar(todas, it.filtroEstado, valor))
         }
     }
 
     private fun filtrar(
         lista: List<Oportunidad>,
-        filtro: EstadoOportunidad?
-    ): List<Oportunidad> =
-        if (filtro == null) lista else lista.filter { it.estadoGestion == filtro }
+        filtro: EstadoOportunidad?,
+        busqueda: String
+    ): List<Oportunidad> {
+        val porEstado =
+            if (filtro == null) lista else lista.filter { it.estadoGestion == filtro }
+        val texto = busqueda.trim()
+        if (texto.isEmpty()) return porEstado
+        return porEstado.filter {
+            it.nombre.contains(texto, ignoreCase = true) ||
+                it.descripcion.contains(texto, ignoreCase = true)
+        }
+    }
 
     /**
      * Trae las oportunidades desde el microservicio y reemplaza la lista local.
@@ -120,7 +136,10 @@ class ListaOportunidadesViewModel(
                 .collect { oportunidades ->
                     todas = oportunidades
                     _uiState.update {
-                        it.copy(cargando = false, oportunidades = filtrar(todas, it.filtroEstado))
+                        it.copy(
+                            cargando = false,
+                            oportunidades = filtrar(todas, it.filtroEstado, it.busqueda)
+                        )
                     }
                 }
         }

@@ -9,7 +9,8 @@ data class ListaOportunidadesUiState(
     val error: String? = null,
     val sincronizando: Boolean = false,
     val mensaje: String? = null,
-    val filtroEstado: EstadoOportunidad? = null
+    val filtroEstado: EstadoOportunidad? = null,
+    val busqueda: String = ""
 ) {
     val listaVacia: Boolean
         get() = !cargando && error == null && oportunidades.isEmpty()

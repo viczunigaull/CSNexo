@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -64,6 +68,7 @@ fun ListaOportunidadesRoute(
         onReintentar = viewModel::reintentar,
         onSincronizar = viewModel::sincronizar,
         onFiltroEstadoChange = viewModel::onFiltroEstadoChange,
+        onBusquedaChange = viewModel::onBusquedaChange,
         onEliminar = viewModel::eliminar
     )
 }
@@ -78,6 +83,7 @@ fun ListaOportunidadesScreen(
     onReintentar: () -> Unit,
     onSincronizar: () -> Unit,
     onFiltroEstadoChange: (EstadoOportunidad?) -> Unit,
+    onBusquedaChange: (String) -> Unit,
     onEliminar: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -157,6 +163,14 @@ fun ListaOportunidadesScreen(
                     ) {
                         item(key = "filtro") {
                             Column {
+                                OutlinedTextField(
+                                    value = state.busqueda,
+                                    onValueChange = onBusquedaChange,
+                                    label = { Text("Buscar por nombre o descripción") },
+                                    singleLine = true,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
                                 Selector(
                                     label = "Filtrar por estado",
                                     seleccionado = state.filtroEstado,
@@ -303,6 +317,7 @@ private fun ListaOportunidadesPreview() {
             onReintentar = {},
             onSincronizar = {},
             onFiltroEstadoChange = {},
+            onBusquedaChange = {},
             onEliminar = {}
         )
     }
