@@ -22,6 +22,10 @@ import com.example.csnexo.ui.contactos.list.ContactoListaViewModel
 import com.example.csnexo.ui.seguimientos.form.SeguimientoFormViewModel
 import com.example.csnexo.ui.seguimientos.list.SeguimientoListaViewModel
 import com.example.csnexo.ui.alertas.AlertasViewModel
+import com.example.csnexo.ui.activaciones.form.ActivacionFormViewModel
+import com.example.csnexo.ui.activaciones.list.ActivacionListaViewModel
+import com.example.csnexo.ui.resultados.form.ResultadoFormViewModel
+import com.example.csnexo.ui.resultados.list.ResultadoListaViewModel
 
 /**
  * Fábrica central de ViewModels.
@@ -122,6 +126,32 @@ object AppViewModelProvider {
             AlertasViewModel(
                 eventoRepository = csnexoApplication().container.eventoRepository,
                 seguimientoRepository = csnexoApplication().container.seguimientoRepository
+            )
+        }
+        initializer {
+            ActivacionListaViewModel(
+                repository = csnexoApplication().container.activacionRepository,
+                servidor = csnexoApplication().container.activacionServidor
+            )
+        }
+        initializer {
+            ActivacionFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.activacionRepository,
+                servidor = csnexoApplication().container.activacionServidor
+            )
+        }
+        initializer {
+            ResultadoListaViewModel(
+                repository = csnexoApplication().container.resultadoRepository,
+                servidor = csnexoApplication().container.resultadoServidor
+            )
+        }
+        initializer {
+            ResultadoFormViewModel(
+                savedStateHandle = createSavedStateHandle(),
+                repository = csnexoApplication().container.resultadoRepository,
+                servidor = csnexoApplication().container.resultadoServidor
             )
         }
     }

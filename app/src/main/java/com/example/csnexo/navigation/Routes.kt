@@ -33,11 +33,21 @@ object Routes {
     const val SEGUIMIENTO_NUEVA = "seguimientos/nueva"
     const val SEGUIMIENTO_EDITAR = "seguimientos/editar/{id}"
 
+    const val ACTIVACIONES = "activaciones"
+    const val ACTIVACION_NUEVA = "activaciones/nueva"
+    const val ACTIVACION_EDITAR = "activaciones/editar/{id}"
+
+    const val RESULTADOS = "resultados"
+    const val RESULTADO_NUEVA = "resultados/nueva"
+    const val RESULTADO_EDITAR = "resultados/editar/{id}"
+
     const val ARG_OPORTUNIDAD_ID = "id"
     const val ARG_ORGANIZACION_ID = "id"
     const val ARG_EVENTO_ID = "id"
     const val ARG_CONTACTO_ID = "id"
     const val ARG_SEGUIMIENTO_ID = "id"
+    const val ARG_ACTIVACION_ID = "id"
+    const val ARG_RESULTADO_ID = "id"
 
     fun editar(oportunidadId: Long): String =
         "oportunidades/editar/$oportunidadId"
@@ -56,4 +66,10 @@ object Routes {
 
     fun seguimientoEditar(id: Long): String =
         "seguimientos/editar/$id"
+
+    fun activacionEditar(id: Long): String =
+        "activaciones/editar/$id"
+
+    fun resultadoEditar(id: Long): String =
+        "resultados/editar/$id"
 }

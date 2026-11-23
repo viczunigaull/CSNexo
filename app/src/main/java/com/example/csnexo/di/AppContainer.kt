@@ -4,24 +4,30 @@ import android.content.Context
 import com.example.csnexo.data.local.AppDatabase
 import com.example.csnexo.data.local.seed.DatabaseSeeder
 import com.example.csnexo.data.preferences.sesionDataStore
+import com.example.csnexo.data.remote.ActivacionServidor
 import com.example.csnexo.data.remote.ContactoServidor
 import com.example.csnexo.data.remote.EventoServidor
 import com.example.csnexo.data.remote.OportunidadServidor
 import com.example.csnexo.data.remote.OrganizacionServidor
+import com.example.csnexo.data.remote.ResultadoServidor
 import com.example.csnexo.data.remote.RetrofitClient
 import com.example.csnexo.data.remote.SeguimientoServidor
+import com.example.csnexo.data.repository.ActivacionRepositoryImpl
 import com.example.csnexo.data.repository.ContactoRepositoryImpl
 import com.example.csnexo.data.repository.EventoRepositoryImpl
 import com.example.csnexo.data.repository.FakeAuthRepository
 import com.example.csnexo.data.repository.OportunidadRepositoryImpl
 import com.example.csnexo.data.repository.OrganizacionRepositoryImpl
+import com.example.csnexo.data.repository.ResultadoRepositoryImpl
 import com.example.csnexo.data.repository.SeguimientoRepositoryImpl
 import com.example.csnexo.data.repository.SesionRepositoryImpl
+import com.example.csnexo.domain.repository.ActivacionRepository
 import com.example.csnexo.domain.repository.AuthRepository
 import com.example.csnexo.domain.repository.ContactoRepository
 import com.example.csnexo.domain.repository.EventoRepository
 import com.example.csnexo.domain.repository.OportunidadRepository
 import com.example.csnexo.domain.repository.OrganizacionRepository
+import com.example.csnexo.domain.repository.ResultadoRepository
 import com.example.csnexo.domain.repository.SeguimientoRepository
 import com.example.csnexo.domain.repository.SesionRepository
 import kotlinx.coroutines.CoroutineScope
@@ -91,6 +97,22 @@ class AppContainer(context: Context) {
 
     val seguimientoServidor: SeguimientoServidor by lazy {
         SeguimientoServidor(RetrofitClient.seguimientoApi)
+    }
+
+    val activacionRepository: ActivacionRepository by lazy {
+        ActivacionRepositoryImpl(database.activacionDao())
+    }
+
+    val activacionServidor: ActivacionServidor by lazy {
+        ActivacionServidor(RetrofitClient.activacionApi)
+    }
+
+    val resultadoRepository: ResultadoRepository by lazy {
+        ResultadoRepositoryImpl(database.resultadoDao())
+    }
+
+    val resultadoServidor: ResultadoServidor by lazy {
+        ResultadoServidor(RetrofitClient.resultadoApi)
     }
 
     init {

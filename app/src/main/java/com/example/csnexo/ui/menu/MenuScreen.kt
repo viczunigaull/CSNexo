@@ -35,6 +35,8 @@ fun MenuScreen(
     onAbrirSeguimientos: () -> Unit,
     onAbrirAlertas: () -> Unit,
     onAbrirFeriados: () -> Unit,
+    onAbrirActivaciones: () -> Unit,
+    onAbrirResultados: () -> Unit,
     onCerrarSesion: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -237,6 +239,56 @@ fun MenuScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Activaciones",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Coordina la participación de las oportunidades confirmadas.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirActivaciones,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir activaciones")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Resultados",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Registra el resultado de cada activación.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                    Button(
+                        onClick = onAbrirResultados,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                    ) {
+                        Text("Abrir resultados")
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             OutlinedButton(
@@ -273,6 +325,8 @@ private fun MenuScreenPreview() {
             onAbrirSeguimientos = {},
             onAbrirAlertas = {},
             onAbrirFeriados = {},
+            onAbrirActivaciones = {},
+            onAbrirResultados = {},
             onCerrarSesion = {}
         )
     }

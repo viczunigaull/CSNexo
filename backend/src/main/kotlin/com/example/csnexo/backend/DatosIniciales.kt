@@ -151,4 +151,36 @@ class DatosIniciales {
                 )
             }
         }
+
+    @Bean
+    fun sembrarActivaciones(repository: ActivacionRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Activacion(
+                            oportunidad = "Patrocinio Feria Empresarial del Maule",
+                            condiciones = "Confirmar stand y entrega de material.",
+                            responsable = "Ejecutiva Demo"
+                        )
+                    )
+                )
+            }
+        }
+
+    @Bean
+    fun sembrarResultados(repository: ResultadoRepository): CommandLineRunner =
+        CommandLineRunner {
+            if (repository.count() == 0L) {
+                repository.saveAll(
+                    listOf(
+                        Resultado(
+                            oportunidad = "Patrocinio Feria Empresarial del Maule",
+                            resultado = "Participación confirmada con 120 asistentes.",
+                            observaciones = "Se acordó repetir el próximo año."
+                        )
+                    )
+                )
+            }
+        }
 }

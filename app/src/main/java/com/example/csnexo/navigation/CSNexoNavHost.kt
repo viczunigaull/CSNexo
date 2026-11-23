@@ -22,6 +22,10 @@ import com.example.csnexo.ui.contactos.list.ContactoListaRoute
 import com.example.csnexo.ui.seguimientos.form.SeguimientoFormRoute
 import com.example.csnexo.ui.seguimientos.list.SeguimientoListaRoute
 import com.example.csnexo.ui.alertas.AlertasRoute
+import com.example.csnexo.ui.activaciones.form.ActivacionFormRoute
+import com.example.csnexo.ui.activaciones.list.ActivacionListaRoute
+import com.example.csnexo.ui.resultados.form.ResultadoFormRoute
+import com.example.csnexo.ui.resultados.list.ResultadoListaRoute
 
 /**
  * Grafo de navegación autenticado.
@@ -67,6 +71,12 @@ fun CSNexoNavHost(
                 onAbrirFeriados = {
                     navController.navigate(Routes.FERIADOS)
                 },
+                onAbrirActivaciones = {
+                    navController.navigate(Routes.ACTIVACIONES)
+                },
+                onAbrirResultados = {
+                    navController.navigate(Routes.RESULTADOS)
+                },
                 onCerrarSesion = onCerrarSesion
             )
         }
@@ -99,6 +109,64 @@ fun CSNexoNavHost(
         composable(Routes.ALERTAS) {
             AlertasRoute(
                 onVolver = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.ACTIVACIONES) {
+            ActivacionListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.ACTIVACION_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.activacionEditar(id)) }
+            )
+        }
+
+        composable(Routes.ACTIVACION_NUEVA) {
+            ActivacionFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.ACTIVACION_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_ACTIVACION_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            ActivacionFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.RESULTADOS) {
+            ResultadoListaRoute(
+                onVolver = { navController.popBackStack() },
+                onAgregar = { navController.navigate(Routes.RESULTADO_NUEVA) },
+                onEditar = { id -> navController.navigate(Routes.resultadoEditar(id)) }
+            )
+        }
+
+        composable(Routes.RESULTADO_NUEVA) {
+            ResultadoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.RESULTADO_EDITAR,
+            arguments = listOf(
+                navArgument(Routes.ARG_RESULTADO_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            ResultadoFormRoute(
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() }
             )
         }
 
