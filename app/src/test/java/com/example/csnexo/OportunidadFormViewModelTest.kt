@@ -1,8 +1,6 @@
 package com.example.csnexo
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.csnexo.data.remote.OportunidadApi
-import com.example.csnexo.data.remote.OportunidadDto
 import com.example.csnexo.data.remote.OportunidadServidor
 import com.example.csnexo.domain.model.Oportunidad
 import com.example.csnexo.domain.model.PotencialComercial
@@ -10,95 +8,60 @@ import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
 import com.example.csnexo.domain.repository.OportunidadRepository
 import com.example.csnexo.ui.oportunidades.form.OportunidadFormViewModel
-import kotlinx.coroutines.flow.Flow
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Rule
-import org.junit.Test
+import kotlinx.coroutines.test.setMain
 
-/**
- * Pruebas del ViewModel del formulario de oportunidades (validaciones y guardado).
- */
-class OportunidadFormViewModelTest {
+@OptIn(ExperimentalCoroutinesApi::class)
+class OportunidadFormViewModelTest : StringSpec({
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val dispatcher = StandardTestDispatcher()
 
-    @Test
-    fun `formulario vacio muestra errores y no guarda`() = runTest {
-        val vm = crearViewModel()
+    beforeSpec { Dispatchers.setMain(dispatcher) }
+    afterSpec { Dispatchers.resetMain() }
 
-        vm.guardar()
+    "formulario vacio muestra errores y no guarda" {
+        runTest(dispatcher) {
+            val repo = mockk<OportunidadRepository>()
+            val servidor = mockk<OportunidadServidor>(relaxed = true)
+            val vm = OportunidadFormViewModel(SavedStateHandle(), repo, servidor)
 
-        val state = vm.uiState.value
-        assertNotNull(state.nombreError)
-        assertNotNull(state.tipoError)
-        assertNotNull(state.descripcionError)
-        assertTrue(!state.guardadoExitosamente)
+            vm.guardar()
+            advanceUntilIdle()
+
+            vm.uiState.value.nombreError.shouldNotBeNull()
+            vm.uiState.value.tipoError.shouldNotBeNull()
+            vm.uiState.value.guardadoExitosamente shouldBe false
+        }
     }
 
-    @Test
-    fun `formulario valido guarda correctamente`() = runTest {
-        val vm = crearViewModel()
+    "formulario valido guarda correctamente" {
+        runTest(dispatcher) {
+            val repo = mockk<OportunidadRepository>()
+            coEvery { repo.crear(any()) } returns Result.success(1L)
+            val servidor = mockk<OportunidadServidor>(relaxed = true)
+            val vm = OportunidadFormViewModel(SavedStateHandle(), repo, servidor)
 
-        vm.onNombreChange("Feria")
-        vm.onTipoChange(TipoOportunidad.PATROCINIO)
-        vm.onDescripcionChange("Descripcion")
-        vm.onFuenteChange("Fuente")
-        vm.onPrioridadChange(Prioridad.ALTA)
-        vm.onPotencialChange(PotencialComercial.ALTO)
-        vm.guardar()
+            vm.onNombreChange("Feria")
+            vm.onTipoChange(TipoOportunidad.PATROCINIO)
+            vm.onDescripcionChange("Descripcion")
+            vm.onFuenteChange("Fuente")
+            vm.onPrioridadChange(Prioridad.ALTA)
+            vm.onPotencialChange(PotencialComercial.ALTO)
+            vm.guardar()
+            advanceUntilIdle()
 
-        val state = vm.uiState.value
-        assertNull(state.nombreError)
-        assertTrue(state.guardadoExitosamente)
+            vm.uiState.value.guardadoExitosamente shouldBe true
+        }
     }
-
-    private fun crearViewModel(): OportunidadFormViewModel =
-        OportunidadFormViewModel(
-            savedStateHandle = SavedStateHandle(),
-            repository = FakeRepo(),
-            servidor = OportunidadServidor(FakeApi())
-        )
-
-    private class FakeRepo : OportunidadRepository {
-        override fun observarTodas(): Flow<List<Oportunidad>> = flowOf(emptyList())
-
-        override suspend fun obtenerPorId(id: Long): Oportunidad? = null
-
-        override suspend fun crear(oportunidad: Oportunidad): Result<Long> = Result.success(1L)
-
-        override suspend fun actualizar(oportunidad: Oportunidad): Result<Unit> = Result.success(Unit)
-
-        override suspend fun eliminar(id: Long): Result<Unit> = Result.success(Unit)
-
-        override suspend fun reemplazarTodas(oportunidades: List<Oportunidad>): Result<Unit> =
-            Result.success(Unit)
-    }
-
-    private class FakeApi : OportunidadApi {
-        override suspend fun listar(): List<OportunidadDto> = emptyList()
-
-        override suspend fun obtener(id: Long): OportunidadDto = OportunidadDto(
-            id = id,
-            nombre = "x",
-            tipo = "OTRO",
-            descripcion = "d",
-            fuenteInformacion = "f",
-            prioridad = "MEDIA",
-            potencialComercial = "MEDIO",
-            estadoGestion = "EVENTO_IDENTIFICADO"
-        )
-
-        override suspend fun crear(oportunidad: OportunidadDto): OportunidadDto =
-            oportunidad.copy(id = 1)
-
-        override suspend fun actualizar(id: Long, oportunidad: OportunidadDto): OportunidadDto =
-            oportunidad
-
-        override suspend fun eliminar(id: Long) = Unit
-    }
-}
+})

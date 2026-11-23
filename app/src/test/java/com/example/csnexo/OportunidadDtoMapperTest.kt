@@ -8,18 +8,17 @@ import com.example.csnexo.domain.model.Oportunidad
 import com.example.csnexo.domain.model.PotencialComercial
 import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.shouldBe
 import java.time.Instant
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Test
 
 /**
  * Pruebas del mapper entre el DTO del microservicio y el modelo de dominio.
  */
-class OportunidadDtoMapperTest {
+class OportunidadDtoMapperTest : StringSpec({
 
-    @Test
-    fun `dto a dominio y de vuelta conserva los datos`() {
+    "dto a dominio y de vuelta conserva los datos" {
         val dto = OportunidadDto(
             id = 3,
             nombre = "Feria",
@@ -35,16 +34,15 @@ class OportunidadDtoMapperTest {
         )
 
         val dominio = dto.aDominio()
-        assertEquals(TipoOportunidad.CONVENIO, dominio.tipo)
-        assertEquals(Prioridad.BAJA, dominio.prioridad)
+        dominio.tipo shouldBe TipoOportunidad.CONVENIO
+        dominio.prioridad shouldBe Prioridad.BAJA
 
         val deVuelta = dominio.aDto()
-        assertEquals("CONVENIO", deVuelta.tipo)
-        assertNull(deVuelta.observaciones)
+        deVuelta.tipo shouldBe "CONVENIO"
+        deVuelta.observaciones.shouldBeNull()
     }
 
-    @Test
-    fun `dominio a dto mantiene fechas en epoch millis`() {
+    "dominio a dto mantiene fechas en epoch millis" {
         val dominio = Oportunidad(
             id = 7,
             nombre = "x",
@@ -59,7 +57,7 @@ class OportunidadDtoMapperTest {
         )
 
         val dto = dominio.aDto()
-        assertEquals(1234L, dto.creadaEn)
-        assertEquals(5678L, dto.actualizadaEn)
+        dto.creadaEn shouldBe 1234L
+        dto.actualizadaEn shouldBe 5678L
     }
-}
+})

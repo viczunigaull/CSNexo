@@ -6,71 +6,78 @@ import com.example.csnexo.domain.repository.CredencialesInvalidasException
 import com.example.csnexo.domain.repository.SesionRepository
 import com.example.csnexo.ui.auth.LoginUiState
 import com.example.csnexo.ui.auth.LoginViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Rule
-import org.junit.Test
+import kotlinx.coroutines.test.setMain
 
-/**
- * Pruebas del ViewModel de login.
- */
-class LoginViewModelTest {
+@OptIn(ExperimentalCoroutinesApi::class)
+class LoginViewModelTest : StringSpec({
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val dispatcher = StandardTestDispatcher()
 
-    @Test
-    fun `campos vacios muestran errores y no inician sesion`() = runTest {
-        val vm = LoginViewModel(FakeSesionRepository(Result.success(usuario())))
+    beforeSpec { Dispatchers.setMain(dispatcher) }
+    afterSpec { Dispatchers.resetMain() }
 
-        vm.iniciarSesion()
+    "campos vacios muestran errores y no inician sesion" {
+        runTest(dispatcher) {
+            val repo = mockk<SesionRepository>()
+            coEvery { repo.iniciarSesion(any(), any()) } returns Result.success(usuario())
+            val vm = LoginViewModel(repo)
 
-        val state = vm.uiState.value
-        assertNotNull(state.usuarioError)
-        assertNotNull(state.claveError)
+            vm.iniciarSesion()
+            advanceUntilIdle()
+
+            vm.uiState.value.usuarioError.shouldNotBeNull()
+            vm.uiState.value.claveError.shouldNotBeNull()
+        }
     }
 
-    @Test
-    fun `credenciales invalidas muestran error`() = runTest {
-        val vm = LoginViewModel(
-            FakeSesionRepository(Result.failure(CredencialesInvalidasException()))
+    "credenciales invalidas muestran error" {
+        runTest(dispatcher) {
+            val repo = mockk<SesionRepository>()
+            coEvery { repo.iniciarSesion(any(), any()) } returns
+                Result.failure(CredencialesInvalidasException())
+            val vm = LoginViewModel(repo)
+
+            vm.onUsuarioChange("x")
+            vm.onClaveChange("y")
+            vm.iniciarSesion()
+            advanceUntilIdle()
+
+            vm.uiState.value.error.shouldNotBeNull()
+        }
+    }
+
+    "login exitoso limpia el estado" {
+        runTest(dispatcher) {
+            val repo = mockk<SesionRepository>()
+            coEvery { repo.iniciarSesion(any(), any()) } returns Result.success(usuario())
+            val vm = LoginViewModel(repo)
+
+            vm.onUsuarioChange("ejecutivo.demo")
+            vm.onClaveChange("demo1234")
+            vm.iniciarSesion()
+            advanceUntilIdle()
+
+            vm.uiState.value shouldBe LoginUiState()
+        }
+    }
+}) {
+    companion object {
+        fun usuario() = Usuario(
+            id = "u1",
+            nombre = "Demo",
+            usuario = "ejecutivo.demo",
+            rol = RolUsuario.EJECUTIVO
         )
-
-        vm.onUsuarioChange("x")
-        vm.onClaveChange("y")
-        vm.iniciarSesion()
-
-        assertNotNull(vm.uiState.value.error)
-    }
-
-    @Test
-    fun `login exitoso limpia el estado`() = runTest {
-        val vm = LoginViewModel(FakeSesionRepository(Result.success(usuario())))
-
-        vm.onUsuarioChange("ejecutivo.demo")
-        vm.onClaveChange("demo1234")
-        vm.iniciarSesion()
-
-        assertEquals(LoginUiState(), vm.uiState.value)
-    }
-
-    private fun usuario() = Usuario(
-        id = "u1",
-        nombre = "Demo",
-        usuario = "ejecutivo.demo",
-        rol = RolUsuario.EJECUTIVO
-    )
-
-    private class FakeSesionRepository(
-        private val resultado: Result<Usuario>
-    ) : SesionRepository {
-        override val sesion: Flow<Usuario?> = flowOf(null)
-
-        override suspend fun iniciarSesion(usuario: String, clave: String): Result<Usuario> = resultado
-
-        override suspend fun cerrarSesion() = Unit
     }
 }

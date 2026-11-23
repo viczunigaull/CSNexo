@@ -5,16 +5,16 @@ import com.example.csnexo.data.mapper.aDominio
 import com.example.csnexo.data.mapper.aEntidad
 import com.example.csnexo.domain.model.Prioridad
 import com.example.csnexo.domain.model.TipoOportunidad
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 
 /**
  * Pruebas del mapper entre la entidad Room y el modelo de dominio.
+ * Estilo Kotest (StringSpec), como en la guía del profesor.
  */
-class OportunidadMapperTest {
+class OportunidadMapperTest : StringSpec({
 
-    @Test
-    fun `entidad a dominio y de vuelta conserva los datos`() {
+    "entidad a dominio y de vuelta conserva los datos" {
         val entidad = OportunidadEntity(
             id = 5,
             nombre = "Feria",
@@ -32,17 +32,16 @@ class OportunidadMapperTest {
         )
 
         val dominio = entidad.aDominio()
-        assertEquals(5L, dominio.id)
-        assertEquals(TipoOportunidad.PATROCINIO, dominio.tipo)
-        assertEquals(Prioridad.ALTA, dominio.prioridad)
+        dominio.id shouldBe 5L
+        dominio.tipo shouldBe TipoOportunidad.PATROCINIO
+        dominio.prioridad shouldBe Prioridad.ALTA
 
         val deVuelta = dominio.aEntidad()
-        assertEquals("PATROCINIO", deVuelta.tipo)
-        assertEquals(1000L, deVuelta.creadaEn)
+        deVuelta.tipo shouldBe "PATROCINIO"
+        deVuelta.creadaEn shouldBe 1000L
     }
 
-    @Test
-    fun `enum desconocido usa el valor por defecto`() {
+    "enum desconocido usa el valor por defecto" {
         val entidad = OportunidadEntity(
             id = 1,
             nombre = "x",
@@ -60,7 +59,7 @@ class OportunidadMapperTest {
         )
 
         val dominio = entidad.aDominio()
-        assertEquals(TipoOportunidad.OTRO, dominio.tipo)
-        assertEquals(Prioridad.MEDIA, dominio.prioridad)
+        dominio.tipo shouldBe TipoOportunidad.OTRO
+        dominio.prioridad shouldBe Prioridad.MEDIA
     }
-}
+})
